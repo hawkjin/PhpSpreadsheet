@@ -2,8 +2,6 @@
 
 namespace PhpOffice\PhpSpreadsheet\Writer\Ods;
 
-use PhpOffice\PhpSpreadsheet\Shared\XMLWriter;
-
 class MetaInf extends WriterPart
 {
     /**
@@ -15,12 +13,7 @@ class MetaInf extends WriterPart
      */
     public function writeManifest()
     {
-        $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-        } else {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        }
+        $objWriter = $this->createXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8');

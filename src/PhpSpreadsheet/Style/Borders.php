@@ -202,7 +202,7 @@ class Borders extends Supervisor
     public function applyFromArray(array $pStyles)
     {
         if ($this->isSupervisor) {
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($this->getStyleArray($pStyles));
+            $this->applyStyleToSelectedCells($pStyles);
         } else {
             if (isset($pStyles['left'])) {
                 $this->getLeft()->applyFromArray($pStyles['left']);
@@ -390,8 +390,7 @@ class Borders extends Supervisor
             $pValue = self::DIAGONAL_NONE;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['diagonalDirection' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['diagonalDirection' => $pValue]);
         } else {
             $this->diagonalDirection = $pValue;
         }

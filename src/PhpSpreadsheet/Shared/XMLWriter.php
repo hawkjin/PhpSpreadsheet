@@ -2,6 +2,8 @@
 
 namespace PhpOffice\PhpSpreadsheet\Shared;
 
+use PhpOffice\PhpSpreadsheet\Writer\IWriter;
+
 class XMLWriter extends \XMLWriter
 {
     public static $debugEnabled = false;
@@ -46,6 +48,22 @@ class XMLWriter extends \XMLWriter
         if (self::$debugEnabled) {
             $this->setIndent(true);
         }
+    }
+
+    /**
+     * Create a new XMLWriter that honours the temporary storage settings of the given writer.
+     *
+     * @param IWriter $writer
+     *
+     * @return XMLWriter
+     */
+    public static function createForWriter(IWriter $writer)
+    {
+        if ($writer->getUseDiskCaching()) {
+            return new self(self::STORAGE_DISK, $writer->getDiskCachingDirectory());
+        }
+
+        return new self(self::STORAGE_MEMORY);
     }
 
     /**

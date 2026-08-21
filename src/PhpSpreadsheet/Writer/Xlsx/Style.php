@@ -26,13 +26,7 @@ class Style extends WriterPart
      */
     public function writeStyles(Spreadsheet $spreadsheet)
     {
-        // Create XML writer
-        $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-        } else {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        }
+        $objWriter = $this->createXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');

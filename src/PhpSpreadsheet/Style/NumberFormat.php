@@ -144,7 +144,7 @@ class NumberFormat extends Supervisor
     public function applyFromArray(array $pStyles)
     {
         if ($this->isSupervisor) {
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($this->getStyleArray($pStyles));
+            $this->applyStyleToSelectedCells($pStyles);
         } else {
             if (isset($pStyles['formatCode'])) {
                 $this->setFormatCode($pStyles['formatCode']);
@@ -184,8 +184,7 @@ class NumberFormat extends Supervisor
             $pValue = self::FORMAT_GENERAL;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['formatCode' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['formatCode' => $pValue]);
         } else {
             $this->formatCode = $pValue;
             $this->builtInFormatCode = self::builtInFormatCodeIndex($pValue);
@@ -218,8 +217,7 @@ class NumberFormat extends Supervisor
     public function setBuiltInFormatCode($pValue)
     {
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['formatCode' => self::builtInFormatCode($pValue)]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['formatCode' => self::builtInFormatCode($pValue)]);
         } else {
             $this->builtInFormatCode = $pValue;
             $this->formatCode = self::builtInFormatCode($pValue);

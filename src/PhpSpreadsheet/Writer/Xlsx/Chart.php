@@ -37,13 +37,7 @@ class Chart extends WriterPart
     {
         $this->calculateCellValues = $calculateCellValues;
 
-        // Create XML writer
-        $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-        } else {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        }
+        $objWriter = $this->createXMLWriter();
         //    Ensure that data series values are up-to-date before we save
         if ($this->calculateCellValues) {
             $pChart->refresh();

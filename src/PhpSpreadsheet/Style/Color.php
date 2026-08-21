@@ -111,7 +111,7 @@ class Color extends Supervisor
     public function applyFromArray(array $pStyles)
     {
         if ($this->isSupervisor) {
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($this->getStyleArray($pStyles));
+            $this->applyStyleToSelectedCells($pStyles);
         } else {
             if (isset($pStyles['rgb'])) {
                 $this->setRGB($pStyles['rgb']);
@@ -151,8 +151,7 @@ class Color extends Supervisor
             $pValue = self::COLOR_BLACK;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['argb' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['argb' => $pValue]);
         } else {
             $this->argb = $pValue;
         }
@@ -187,8 +186,7 @@ class Color extends Supervisor
             $pValue = '000000';
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['argb' => 'FF' . $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['argb' => 'FF' . $pValue]);
         } else {
             $this->argb = 'FF' . $pValue;
         }

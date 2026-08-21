@@ -202,8 +202,7 @@ class Alignment extends Supervisor
         }
 
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['horizontal' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['horizontal' => $pValue]);
         } else {
             $this->horizontal = $pValue;
         }
@@ -239,8 +238,7 @@ class Alignment extends Supervisor
         }
 
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['vertical' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['vertical' => $pValue]);
         } else {
             $this->vertical = $pValue;
         }
@@ -281,8 +279,7 @@ class Alignment extends Supervisor
         // Set rotation
         if (($pValue >= -90 && $pValue <= 90) || $pValue == -165) {
             if ($this->isSupervisor) {
-                $styleArray = $this->getStyleArray(['textRotation' => $pValue]);
-                $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+                $this->applyStyleToSelectedCells(['textRotation' => $pValue]);
             } else {
                 $this->textRotation = $pValue;
             }
@@ -320,8 +317,7 @@ class Alignment extends Supervisor
             $pValue = false;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['wrapText' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['wrapText' => $pValue]);
         } else {
             $this->wrapText = $pValue;
         }
@@ -356,8 +352,7 @@ class Alignment extends Supervisor
             $pValue = false;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['shrinkToFit' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['shrinkToFit' => $pValue]);
         } else {
             $this->shrinkToFit = $pValue;
         }
@@ -396,8 +391,7 @@ class Alignment extends Supervisor
             }
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['indent' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['indent' => $pValue]);
         } else {
             $this->indent = $pValue;
         }
@@ -432,8 +426,7 @@ class Alignment extends Supervisor
             $pValue = 0;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['readOrder' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['readOrder' => $pValue]);
         } else {
             $this->readOrder = $pValue;
         }

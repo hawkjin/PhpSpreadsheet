@@ -45,26 +45,6 @@ class GridLines extends Properties
         ],
     ];
 
-    private $shadowProperties = [
-        'presets' => self::SHADOW_PRESETS_NOSHADOW,
-        'effect' => null,
-        'color' => [
-            'type' => self::EXCEL_COLOR_TYPE_STANDARD,
-            'value' => 'black',
-            'alpha' => 85,
-        ],
-        'size' => [
-            'sx' => null,
-            'sy' => null,
-            'kx' => null,
-        ],
-        'blur' => null,
-        'direction' => null,
-        'distance' => null,
-        'algn' => null,
-        'rotWithShape' => null,
-    ];
-
     private $glowProperties = [
         'size' => null,
         'color' => [
@@ -74,9 +54,10 @@ class GridLines extends Properties
         ],
     ];
 
-    private $softEdges = [
-        'size' => null,
-    ];
+    public function __construct()
+    {
+        $this->shadowProperties['color']['alpha'] = 85;
+    }
 
     /**
      * Get Object State.
@@ -301,52 +282,6 @@ class GridLines extends Properties
     }
 
     /**
-     * Set Shadow Presets Properties.
-     *
-     * @param int $shadow_presets
-     *
-     * @return $this
-     */
-    private function setShadowPresetsProperties($shadow_presets)
-    {
-        $this->shadowProperties['presets'] = $shadow_presets;
-        $this->setShadowProperiesMapValues($this->getShadowPresetsMap($shadow_presets));
-
-        return $this;
-    }
-
-    /**
-     * Set Shadow Properties Values.
-     *
-     * @param array $properties_map
-     * @param mixed &$reference
-     *
-     * @return $this
-     */
-    private function setShadowProperiesMapValues(array $properties_map, &$reference = null)
-    {
-        $base_reference = $reference;
-        foreach ($properties_map as $property_key => $property_val) {
-            if (is_array($property_val)) {
-                if ($reference === null) {
-                    $reference = &$this->shadowProperties[$property_key];
-                } else {
-                    $reference = &$reference[$property_key];
-                }
-                $this->setShadowProperiesMapValues($property_val, $reference);
-            } else {
-                if ($base_reference === null) {
-                    $this->shadowProperties[$property_key] = $property_val;
-                } else {
-                    $reference[$property_key] = $property_val;
-                }
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Set Shadow Color.
      *
      * @param string $color
@@ -371,66 +306,6 @@ class GridLines extends Properties
     }
 
     /**
-     * Set Shadow Blur.
-     *
-     * @param float $blur
-     *
-     * @return $this
-     */
-    private function setShadowBlur($blur)
-    {
-        if ($blur !== null) {
-            $this->shadowProperties['blur'] = (string) $this->getExcelPointsWidth($blur);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set Shadow Angle.
-     *
-     * @param int $angle
-     *
-     * @return $this
-     */
-    private function setShadowAngle($angle)
-    {
-        if ($angle !== null) {
-            $this->shadowProperties['direction'] = (string) $this->getExcelPointsAngle($angle);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set Shadow Distance.
-     *
-     * @param float $distance
-     *
-     * @return $this
-     */
-    private function setShadowDistance($distance)
-    {
-        if ($distance !== null) {
-            $this->shadowProperties['distance'] = (string) $this->getExcelPointsWidth($distance);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get Shadow Property.
-     *
-     * @param string|string[] $elements
-     *
-     * @return string
-     */
-    public function getShadowProperty($elements)
-    {
-        return $this->getArrayElementsValue($this->shadowProperties, $elements);
-    }
-
-    /**
      * Set Soft Edges Size.
      *
      * @param float $size
@@ -441,15 +316,5 @@ class GridLines extends Properties
             $this->activateObject();
             $this->softEdges['size'] = (string) $this->getExcelPointsWidth($size);
         }
-    }
-
-    /**
-     * Get Soft Edges Size.
-     *
-     * @return string
-     */
-    public function getSoftEdgesSize()
-    {
-        return $this->softEdges['size'];
     }
 }

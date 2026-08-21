@@ -24,12 +24,7 @@ class Workbook extends WriterPart
      */
     public function writeWorkbook(Spreadsheet $spreadsheet, $recalcRequired = false)
     {
-        // Create XML writer
-        if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-        } else {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        }
+        $objWriter = $this->createXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');

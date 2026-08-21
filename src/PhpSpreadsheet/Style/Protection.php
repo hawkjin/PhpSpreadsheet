@@ -91,7 +91,7 @@ class Protection extends Supervisor
     public function applyFromArray(array $pStyles)
     {
         if ($this->isSupervisor) {
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($this->getStyleArray($pStyles));
+            $this->applyStyleToSelectedCells($pStyles);
         } else {
             if (isset($pStyles['locked'])) {
                 $this->setLocked($pStyles['locked']);
@@ -128,8 +128,7 @@ class Protection extends Supervisor
     public function setLocked($pValue)
     {
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['locked' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['locked' => $pValue]);
         } else {
             $this->locked = $pValue;
         }
@@ -161,8 +160,7 @@ class Protection extends Supervisor
     public function setHidden($pValue)
     {
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['hidden' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['hidden' => $pValue]);
         } else {
             $this->hidden = $pValue;
         }
