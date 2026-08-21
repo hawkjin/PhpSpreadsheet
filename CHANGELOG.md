@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ### Fixed
 
+- Security scanner no longer misses XXE/XEE payloads that declare their encoding with single quotes, or that declare risky elements in lower case
 - ...
 
 ### Changed
