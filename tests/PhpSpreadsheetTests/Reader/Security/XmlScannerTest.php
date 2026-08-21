@@ -2,6 +2,7 @@
 
 namespace PhpOffice\PhpSpreadsheetTests\Reader\Security;
 
+use PhpOffice\PhpSpreadsheet\Reader\Html;
 use PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
@@ -136,5 +137,41 @@ class XmlScannerTest extends TestCase
         $scanner = new XmlScanner();
         $output = $scanner->scan($input = '<?xml version="1.0" encoding="utf-8"?><foo>bar</foo>');
         $this->assertSame($input, $output);
+    }
+
+    public function testEncodingAllowsSingleQuotesAndWhitespace()
+    {
+        $scanner = new XmlScanner();
+
+        foreach ([
+            "<?xml version='1.0' encoding='utf-8'?><foo>bar</foo>",
+            '<?xml version="1.0" encoding = "utf-8"?><foo>bar</foo>',
+        ] as $input) {
+            $this->assertSame($input, $scanner->scan($input));
+        }
+    }
+
+    public function testSingleQuotedUtf7EncodingIsRejected()
+    {
+        $this->expectException(\PhpOffice\PhpSpreadsheet\Reader\Exception::class);
+
+        $scanner = new XmlScanner();
+        $scanner->scanFile(__DIR__ . '/../../../data/Reader/Xml/XmlScannerUtf7SingleQuoted.xml');
+    }
+
+    public function testLowercaseDoctypeIsRejected()
+    {
+        $this->expectException(\PhpOffice\PhpSpreadsheet\Reader\Exception::class);
+
+        $scanner = new XmlScanner();
+        $scanner->scan('<!doctype root><root />');
+    }
+
+    public function testLowercaseEntityIsRejectedForHtmlReader()
+    {
+        $this->expectException(\PhpOffice\PhpSpreadsheet\Reader\Exception::class);
+
+        $scanner = XmlScanner::getInstance(new Html());
+        $scanner->scan('<!entity foo "bar">');
     }
 }

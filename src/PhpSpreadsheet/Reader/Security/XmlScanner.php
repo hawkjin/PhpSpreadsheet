@@ -92,15 +92,15 @@ class XmlScanner
 
     private function toUtf8($xml)
     {
-        $pattern = '/encoding="(.*?)"/';
+        $pattern = '/encoding\s*=\s*(["\'])(.*?)\1/i';
         $result = preg_match($pattern, $xml, $matches);
-        $charset = strtoupper($result ? $matches[1] : 'UTF-8');
+        $charset = strtoupper($result ? $matches[2] : 'UTF-8');
 
         if ($charset !== 'UTF-8') {
             $xml = mb_convert_encoding($xml, 'UTF-8', $charset);
 
             $result = preg_match($pattern, $xml, $matches);
-            $charset = strtoupper($result ? $matches[1] : 'UTF-8');
+            $charset = strtoupper($result ? $matches[2] : 'UTF-8');
             if ($charset !== 'UTF-8') {
                 throw new Reader\Exception('Suspicious Double-encoded XML, spreadsheet file load() aborted to prevent XXE/XEE attacks');
             }
@@ -127,7 +127,7 @@ class XmlScanner
         // Don't rely purely on libxml_disable_entity_loader()
         $pattern = '/\\0?' . implode('\\0?', str_split($this->pattern)) . '\\0?/';
 
-        if (preg_match($pattern, $xml)) {
+        if (preg_match($pattern . 'i', $xml)) {
             throw new Reader\Exception('Detected use of ENTITY in XML, spreadsheet file load() aborted to prevent XXE/XEE attacks');
         }
 
