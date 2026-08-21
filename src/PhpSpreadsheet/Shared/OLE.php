@@ -217,6 +217,8 @@ class OLE
      *
      * @param int|OLE\PPS $blockIdOrPps block id or PPS
      *
+     * @throws ReaderException
+     *
      * @return resource read-only stream
      */
     public function getStream($blockIdOrPps)
@@ -241,7 +243,12 @@ class OLE
             $path .= '&blockId=' . $blockIdOrPps;
         }
 
-        return fopen($path, 'r');
+        $stream = fopen($path, 'r');
+        if ($stream === false) {
+            throw new ReaderException('Could not open OLE stream ' . $path);
+        }
+
+        return $stream;
     }
 
     /**

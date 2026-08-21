@@ -2,6 +2,8 @@
 
 namespace PhpOffice\PhpSpreadsheet\Shared;
 
+use PhpOffice\PhpSpreadsheet\Exception;
+
 class Drawing
 {
     /**
@@ -152,12 +154,17 @@ class Drawing
      *
      * @param string $p_sFile Path to Windows DIB (BMP) image
      *
+     * @throws Exception
+     *
      * @return resource
      */
     public static function imagecreatefrombmp($p_sFile)
     {
         //    Load the image into a string
         $file = fopen($p_sFile, 'rb');
+        if ($file === false) {
+            throw new Exception('Could not open ' . $p_sFile . ' for reading.');
+        }
         $read = fread($file, 10);
         while (!feof($file) && ($read != '')) {
             $read .= fread($file, 1024);

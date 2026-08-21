@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 
 ### Changed
 
+- Errors that were previously swallowed are now reported: opening a corrupt Xlsx file, or an unreadable image or OLE stream, throws instead of failing later with a confusing error; a formula that cannot be calculated while writing Ods now throws, as it already did for Xls and Xlsx; and rethrown calculation exceptions keep the original exception as `getPrevious()`
 - Drop support for PHP 7.1, according to https://phpspreadsheet.readthedocs.io/en/latest/#php-version-support
 - Drop partial migration tool in favor of complete migration via RectorPHP [#1445](https://github.com/PHPOffice/PhpSpreadsheet/issues/1445)
 

@@ -2,6 +2,7 @@
 
 namespace PhpOffice\PhpSpreadsheet\Writer\Ods;
 
+use PhpOffice\PhpSpreadsheet\Calculation\Exception as CalculationException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
@@ -208,8 +209,12 @@ class Content extends WriterPart
                     if ($this->getParentWriter()->getPreCalculateFormulas()) {
                         try {
                             $formulaValue = $cell->getCalculatedValue();
-                        } catch (Exception $e) {
-                            // don't do anything
+                        } catch (CalculationException $e) {
+                            throw new Exception(
+                                'Could not calculate the value of formula ' . $cell->getValue() . ': ' . $e->getMessage(),
+                                $e->getCode(),
+                                $e
+                            );
                         }
                     }
                     $objWriter->writeAttribute('table:formula', 'of:' . $cell->getValue());

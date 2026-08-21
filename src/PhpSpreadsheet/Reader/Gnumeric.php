@@ -61,6 +61,9 @@ class Gnumeric extends BaseReader
 
         // Read signature data (first 3 bytes)
         $fh = fopen($pFilename, 'r');
+        if ($fh === false) {
+            throw new Exception('Could not open ' . $pFilename . ' for reading.');
+        }
         $data = fread($fh, 2);
         fclose($fh);
 
