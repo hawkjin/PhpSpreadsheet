@@ -166,7 +166,7 @@ class Font extends Supervisor
     public function applyFromArray(array $pStyles)
     {
         if ($this->isSupervisor) {
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($this->getStyleArray($pStyles));
+            $this->applyStyleToSelectedCells($pStyles);
         } else {
             if (isset($pStyles['name'])) {
                 $this->setName($pStyles['name']);
@@ -227,8 +227,7 @@ class Font extends Supervisor
             $pValue = 'Calibri';
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['name' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['name' => $pValue]);
         } else {
             $this->name = $pValue;
         }
@@ -263,8 +262,7 @@ class Font extends Supervisor
             $pValue = 10;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['size' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['size' => $pValue]);
         } else {
             $this->size = $pValue;
         }
@@ -299,8 +297,7 @@ class Font extends Supervisor
             $pValue = false;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['bold' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['bold' => $pValue]);
         } else {
             $this->bold = $pValue;
         }
@@ -335,8 +332,7 @@ class Font extends Supervisor
             $pValue = false;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['italic' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['italic' => $pValue]);
         } else {
             $this->italic = $pValue;
         }
@@ -371,8 +367,7 @@ class Font extends Supervisor
             $pValue = false;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['superscript' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['superscript' => $pValue]);
         } else {
             $this->superscript = $pValue;
             $this->subscript = !$pValue;
@@ -408,8 +403,7 @@ class Font extends Supervisor
             $pValue = false;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['subscript' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['subscript' => $pValue]);
         } else {
             $this->subscript = $pValue;
             $this->superscript = !$pValue;
@@ -449,8 +443,7 @@ class Font extends Supervisor
             $pValue = self::UNDERLINE_NONE;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['underline' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['underline' => $pValue]);
         } else {
             $this->underline = $pValue;
         }
@@ -486,8 +479,7 @@ class Font extends Supervisor
         }
 
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['strikethrough' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['strikethrough' => $pValue]);
         } else {
             $this->strikethrough = $pValue;
         }
@@ -516,15 +508,7 @@ class Font extends Supervisor
      */
     public function setColor(Color $pValue)
     {
-        // make sure parameter is a real color and not a supervisor
-        $color = $pValue->getIsSupervisor() ? $pValue->getSharedComponent() : $pValue;
-
-        if ($this->isSupervisor) {
-            $styleArray = $this->getColor()->getStyleArray(['argb' => $color->getARGB()]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
-        } else {
-            $this->color = $color;
-        }
+        $this->color = $this->assignColor($pValue, $this->color);
 
         return $this;
     }

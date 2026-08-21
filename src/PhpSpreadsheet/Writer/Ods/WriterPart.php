@@ -2,6 +2,7 @@
 
 namespace PhpOffice\PhpSpreadsheet\Writer\Ods;
 
+use PhpOffice\PhpSpreadsheet\Shared\XMLWriter;
 use PhpOffice\PhpSpreadsheet\Writer\Ods;
 
 abstract class WriterPart
@@ -21,6 +22,16 @@ abstract class WriterPart
     public function getParentWriter()
     {
         return $this->parentWriter;
+    }
+
+    /**
+     * Create a new XMLWriter, using the temporary storage settings of the parent writer.
+     *
+     * @return XMLWriter
+     */
+    protected function createXMLWriter()
+    {
+        return XMLWriter::createForWriter($this->getParentWriter());
     }
 
     /**

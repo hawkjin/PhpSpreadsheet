@@ -132,7 +132,7 @@ class Border extends Supervisor
     public function applyFromArray(array $pStyles)
     {
         if ($this->isSupervisor) {
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($this->getStyleArray($pStyles));
+            $this->applyStyleToSelectedCells($pStyles);
         } else {
             if (isset($pStyles['borderStyle'])) {
                 $this->setBorderStyle($pStyles['borderStyle']);
@@ -176,8 +176,7 @@ class Border extends Supervisor
             $pValue = self::BORDER_MEDIUM;
         }
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['borderStyle' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['borderStyle' => $pValue]);
         } else {
             $this->borderStyle = $pValue;
         }
@@ -206,15 +205,7 @@ class Border extends Supervisor
      */
     public function setColor(Color $pValue)
     {
-        // make sure parameter is a real color and not a supervisor
-        $color = $pValue->getIsSupervisor() ? $pValue->getSharedComponent() : $pValue;
-
-        if ($this->isSupervisor) {
-            $styleArray = $this->getColor()->getStyleArray(['argb' => $color->getARGB()]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
-        } else {
-            $this->color = $color;
-        }
+        $this->color = $this->assignColor($pValue, $this->color);
 
         return $this;
     }

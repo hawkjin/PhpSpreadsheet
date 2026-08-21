@@ -146,7 +146,7 @@ class Fill extends Supervisor
     public function applyFromArray(array $pStyles)
     {
         if ($this->isSupervisor) {
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($this->getStyleArray($pStyles));
+            $this->applyStyleToSelectedCells($pStyles);
         } else {
             if (isset($pStyles['fillType'])) {
                 $this->setFillType($pStyles['fillType']);
@@ -193,8 +193,7 @@ class Fill extends Supervisor
     public function setFillType($pValue)
     {
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['fillType' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['fillType' => $pValue]);
         } else {
             $this->fillType = $pValue;
         }
@@ -226,8 +225,7 @@ class Fill extends Supervisor
     public function setRotation($pValue)
     {
         if ($this->isSupervisor) {
-            $styleArray = $this->getStyleArray(['rotation' => $pValue]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
+            $this->applyStyleToSelectedCells(['rotation' => $pValue]);
         } else {
             $this->rotation = $pValue;
         }
@@ -256,15 +254,7 @@ class Fill extends Supervisor
      */
     public function setStartColor(Color $pValue)
     {
-        // make sure parameter is a real color and not a supervisor
-        $color = $pValue->getIsSupervisor() ? $pValue->getSharedComponent() : $pValue;
-
-        if ($this->isSupervisor) {
-            $styleArray = $this->getStartColor()->getStyleArray(['argb' => $color->getARGB()]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
-        } else {
-            $this->startColor = $color;
-        }
+        $this->startColor = $this->assignColor($pValue, $this->startColor);
 
         return $this;
     }
@@ -290,15 +280,7 @@ class Fill extends Supervisor
      */
     public function setEndColor(Color $pValue)
     {
-        // make sure parameter is a real color and not a supervisor
-        $color = $pValue->getIsSupervisor() ? $pValue->getSharedComponent() : $pValue;
-
-        if ($this->isSupervisor) {
-            $styleArray = $this->getEndColor()->getStyleArray(['argb' => $color->getARGB()]);
-            $this->getActiveSheet()->getStyle($this->getSelectedCells())->applyFromArray($styleArray);
-        } else {
-            $this->endColor = $color;
-        }
+        $this->endColor = $this->assignColor($pValue, $this->endColor);
 
         return $this;
     }

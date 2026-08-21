@@ -2,7 +2,6 @@
 
 namespace PhpOffice\PhpSpreadsheet\Writer\Ods;
 
-use PhpOffice\PhpSpreadsheet\Shared\XMLWriter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class Styles extends WriterPart
@@ -18,12 +17,7 @@ class Styles extends WriterPart
      */
     public function write(Spreadsheet $spreadsheet = null)
     {
-        $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-        } else {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        }
+        $objWriter = $this->createXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8');

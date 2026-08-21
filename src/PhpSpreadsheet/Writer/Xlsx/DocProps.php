@@ -2,7 +2,6 @@
 
 namespace PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-use PhpOffice\PhpSpreadsheet\Shared\XMLWriter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class DocProps extends WriterPart
@@ -18,13 +17,7 @@ class DocProps extends WriterPart
      */
     public function writeDocPropsApp(Spreadsheet $spreadsheet)
     {
-        // Create XML writer
-        $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-        } else {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        }
+        $objWriter = $this->createXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');
@@ -117,13 +110,7 @@ class DocProps extends WriterPart
      */
     public function writeDocPropsCore(Spreadsheet $spreadsheet)
     {
-        // Create XML writer
-        $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-        } else {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        }
+        $objWriter = $this->createXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');
@@ -191,13 +178,7 @@ class DocProps extends WriterPart
             return;
         }
 
-        // Create XML writer
-        $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-        } else {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        }
+        $objWriter = $this->createXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');
