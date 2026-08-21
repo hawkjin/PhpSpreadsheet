@@ -106,7 +106,9 @@ class Xlsx extends BaseReader
         $worksheetNames = [];
 
         $zip = new ZipArchive();
-        $zip->open($pFilename);
+        if ($zip->open($pFilename) !== true) {
+            throw new Exception('Could not open ' . $pFilename . ' for reading! Error opening file.');
+        }
 
         //    The files we're looking at here are small enough that simpleXML is more efficient than XMLReader
         //~ http://schemas.openxmlformats.org/package/2006/relationships");
@@ -151,7 +153,9 @@ class Xlsx extends BaseReader
         $worksheetInfo = [];
 
         $zip = new ZipArchive();
-        $zip->open($pFilename);
+        if ($zip->open($pFilename) !== true) {
+            throw new Exception('Could not open ' . $pFilename . ' for reading! Error opening file.');
+        }
 
         //~ http://schemas.openxmlformats.org/package/2006/relationships"
         $rels = simplexml_load_string(
@@ -336,7 +340,9 @@ class Xlsx extends BaseReader
         $unparsedLoadedData = [];
 
         $zip = new ZipArchive();
-        $zip->open($pFilename);
+        if ($zip->open($pFilename) !== true) {
+            throw new Exception('Could not open ' . $pFilename . ' for reading! Error opening file.');
+        }
 
         //    Read the theme first, because we need the colour scheme when reading the styles
         //~ http://schemas.openxmlformats.org/package/2006/relationships"

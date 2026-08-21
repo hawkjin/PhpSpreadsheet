@@ -380,12 +380,20 @@ class Xlsx extends BaseWriter
                         $imagePathSplitted = explode('#', $imagePath);
 
                         $imageZip = new ZipArchive();
-                        $imageZip->open($imagePathSplitted[0]);
+                        if ($imageZip->open($imagePathSplitted[0]) !== true) {
+                            throw new WriterException("Could not open {$imagePathSplitted[0]} for reading! Error opening file.");
+                        }
                         $imageContents = $imageZip->getFromName($imagePathSplitted[1]);
                         $imageZip->close();
                         unset($imageZip);
+                        if ($imageContents === false) {
+                            throw new WriterException("Could not read {$imagePathSplitted[1]} from {$imagePathSplitted[0]}.");
+                        }
                     } else {
                         $imageContents = file_get_contents($imagePath);
+                        if ($imageContents === false) {
+                            throw new WriterException("Could not read $imagePath for writing.");
+                        }
                     }
 
                     $zip->addFromString('xl/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);

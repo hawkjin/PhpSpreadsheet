@@ -2774,7 +2774,7 @@ class Calculation
         try {
             return $this->calculateCellValue($pCell);
         } catch (\Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -2819,7 +2819,7 @@ class Calculation
             $cellAddress = array_pop($this->cellStack);
             $this->spreadsheet->getSheetByName($cellAddress['sheet'])->getCell($cellAddress['cell']);
 
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
 
         if ((is_array($result)) && (self::$returnArrayAsType != self::RETURN_ARRAY_AS_ARRAY)) {
@@ -2913,7 +2913,7 @@ class Calculation
         try {
             $result = self::unwrapResult($this->_calculateFormulaValue($formula, $cellID, $pCell));
         } catch (\Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
 
         if ($this->spreadsheet === null) {

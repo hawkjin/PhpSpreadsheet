@@ -2,6 +2,8 @@
 
 namespace PhpOffice\PhpSpreadsheetTests\Cell;
 
+use PhpOffice\PhpSpreadsheet\Calculation\Exception as CalculationException;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PHPUnit\Framework\TestCase;
@@ -48,5 +50,23 @@ class CellTest extends TestCase
     public function providerSetValueExplicitException()
     {
         return require 'data/Cell/SetValueExplicitException.php';
+    }
+
+    public function testGetCalculatedValueExceptionKeepsPreviousException()
+    {
+        $spreadsheet = new Spreadsheet();
+        $cell = $spreadsheet->getActiveSheet()->getCell('A1');
+        $cell->setValueExplicit('=SUM(', DataType::TYPE_FORMULA);
+
+        try {
+            $cell->getCalculatedValue();
+        } catch (CalculationException $e) {
+            self::assertInstanceOf(CalculationException::class, $e->getPrevious());
+            self::assertStringContainsString("Expecting ')'", $e->getPrevious()->getMessage());
+
+            return;
+        }
+
+        self::fail('Expected a ' . CalculationException::class . ' to be thrown');
     }
 }

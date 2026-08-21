@@ -275,7 +275,9 @@ class Cell
                 }
 
                 throw new \PhpOffice\PhpSpreadsheet\Calculation\Exception(
-                    $this->getWorksheet()->getTitle() . '!' . $this->getCoordinate() . ' -> ' . $ex->getMessage()
+                    $this->getWorksheet()->getTitle() . '!' . $this->getCoordinate() . ' -> ' . $ex->getMessage(),
+                    $ex->getCode(),
+                    $ex
                 );
             }
 

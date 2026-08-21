@@ -4,6 +4,7 @@ namespace PhpOffice\PhpSpreadsheetTests\Reader;
 
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Document\Properties;
+use PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Shared\File;
 use PhpOffice\PhpSpreadsheet\Style\Conditional;
@@ -248,6 +249,30 @@ class XlsxTest extends TestCase
 height:13.5pt;z-index:5;mso-wrap-style:tight'],
             ['position:absolute; margin-left:424.5pt; margin-top:169.5pt; width:67.5pt;
             height:13.5pt;z-index:5;mso-wrap-style:tight'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerInvalidZipFileMethods
+     *
+     * @param string $method
+     */
+    public function testInvalidZipFileThrows($method)
+    {
+        $reader = new Xlsx();
+
+        $this->expectException(ReaderException::class);
+        $this->expectExceptionMessage('Error opening file');
+
+        $reader->$method('./data/Reader/CSV/enclosure.csv');
+    }
+
+    public function providerInvalidZipFileMethods()
+    {
+        return [
+            ['load'],
+            ['listWorksheetNames'],
+            ['listWorksheetInfo'],
         ];
     }
 }
